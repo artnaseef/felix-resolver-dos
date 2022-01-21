@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features xmlns="http://karaf.apache.org/xmlns/features/v1.3.0" name="cxf-${cxf.version}">
+
+    <!--     -->
+    <!-- CXF -->
+    <!--     -->
+
+    <!-- Copied from CXF project and reworked slightly -->
+
+    <feature name="test-cxf-specs" version="${cxf.version}">
+        <bundle start-level="9">mvn:org.apache.geronimo.specs/geronimo-osgi-registry/1.1</bundle>
+        <bundle start-level="10" dependency="true">mvn:com.sun.activation/jakarta.activation/${cxf.jakarta.activation.version}</bundle>
+        <bundle start-level="10" dependency="true">mvn:jakarta.annotation/jakarta.annotation-api/${cxf.javax.annotation-api.version}</bundle>
+        <bundle start-level="10" dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.stax-api-1.0/${cxf.servicemix.specs.version}</bundle>
+        <bundle start-level="10" dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jaxb-api-2.3/${cxf.servicemix.specs.jaxb.version}</bundle>
+        <bundle start-level="10" dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jaxws-api-2.3/${cxf.specs.jaxws.api.version}</bundle>
+        <bundle start-level="10" dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jaxrs-api-2.1/${cxf.servicemix.jaxrs.specs.version}</bundle>
+        <bundle start-level="10" dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.saaj-api-1.4/1.4_1</bundle>
+        <bundle start-level="10" dependency="true">mvn:jakarta.jws/jakarta.jws-api/1.1.1</bundle>
+        <bundle start-level="10" dependency="true">mvn:jakarta.mail/jakarta.mail-api/${cxf.jakarta.mail.version}</bundle>
+        <bundle start-level="20" dependency="true">mvn:org.codehaus.woodstox/stax2-api/${cxf.woodstox.stax2-api.version}</bundle>
+        <bundle start-level="20">mvn:com.fasterxml.woodstox/woodstox-core/${cxf.woodstox.core.version}</bundle>
+        <bundle start-level="20">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jaxb-runtime/${cxf.jaxb.bundle.version}</bundle>
+        <bundle start-level="20">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jaxb-xjc/${cxf.jaxb.bundle.version}</bundle>
+        <bundle start-level="20">mvn:com.sun.istack/istack-commons-runtime/${cxf.istack.bundle.version}</bundle>
+    </feature>
+    <feature name="test-cxf-core" version="${cxf.version}">
+        <feature version="${cxf.version}">test-cxf-specs</feature>
+        <bundle start-level="30" dependency="true">mvn:org.apache.ws.xmlschema/xmlschema-core/${cxf.xmlschema.version}</bundle>
+        <bundle start-level="25" dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.xmlresolver/${cxf.xmlresolver.bundle.version}</bundle>
+        <bundle start-level="30" dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.fastinfoset/${cxf.fastinfoset.bundle.version}</bundle>
+        <bundle start-level="40">mvn:org.apache.cxf/cxf-core/${cxf.version}</bundle>
+        <bundle start-level="40">mvn:org.apache.cxf/cxf-rt-management/${cxf.version}</bundle>
+        <conditional>
+            <condition>shell</condition>
+            <feature version="${cxf.version}">cxf-commands</feature>
+        </conditional>
+    </feature>
+
+
+    <feature name="test-cxf-core-part001" version="${cxf.version}">
+        <feature version="${cxf.version}">test-cxf-specs</feature>
+    </feature>
+    <feature name="test-cxf-core-part002" version="${cxf.version}">
+        <bundle start-level="30" dependency="true">mvn:org.apache.ws.xmlschema/xmlschema-core/${cxf.xmlschema.version}</bundle>
+    </feature>
+    <feature name="test-cxf-core-part003" version="${cxf.version}">
+        <bundle start-level="25" dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.xmlresolver/${cxf.xmlresolver.bundle.version}</bundle>
+    </feature>
+    <feature name="test-cxf-core-part004" version="${cxf.version}">
+        <bundle start-level="30" dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.fastinfoset/${cxf.fastinfoset.bundle.version}</bundle>
+    </feature>
+    <feature name="test-cxf-core-part005" version="${cxf.version}">
+        <bundle start-level="40">mvn:org.apache.cxf/cxf-core/${cxf.version}</bundle>
+    </feature>
+    <feature name="test-cxf-core-part006" version="${cxf.version}">
+        <bundle start-level="40">mvn:org.apache.cxf/cxf-rt-management/${cxf.version}</bundle>
+    </feature>
+    <feature name="test-cxf-core-part007" version="${cxf.version}">
+        <conditional>
+            <condition>shell</condition>
+            <feature version="${cxf.version}">cxf-commands</feature>
+        </conditional>
+    </feature>
+
+
+    <!--         -->
+    <!-- SPRING  -->
+    <!--         -->
+
+    <!-- Copied from SPRING project and reworked slightly -->
+
+    <feature name="test-spring-part001" description="Spring 5.2.x support" version="5.2.13.RELEASE_1">
+        <bundle dependency="true" start-level="30">
+            mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.aopalliance/1.0_6
+        </bundle>
+    </feature>
+    <feature name="test-spring-part002" description="Spring 5.2.x support" version="5.2.13.RELEASE_1">
+        <bundle start-level="30">
+            mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-core/5.2.13.RELEASE_1
+        </bundle>
+    </feature>
+    <feature name="test-spring-part003" description="Spring 5.2.x support" version="5.2.13.RELEASE_1">
+        <bundle start-level="30">
+            mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-expression/5.2.13.RELEASE_1
+        </bundle>
+    </feature>
+    <feature name="test-spring-part004" description="Spring 5.2.x support" version="5.2.13.RELEASE_1">
+        <bundle start-level="30">
+            mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-beans/5.2.13.RELEASE_1
+        </bundle>
+    </feature>
+    <feature name="test-spring-part005" description="Spring 5.2.x support" version="5.2.13.RELEASE_1">
+        <bundle start-level="30">
+            mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-aop/5.2.13.RELEASE_1
+        </bundle>
+    </feature>
+    <feature name="test-spring-part006" description="Spring 5.2.x support" version="5.2.13.RELEASE_1">
+        <bundle start-level="30">
+            mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-context/5.2.13.RELEASE_1
+        </bundle>
+    </feature>
+    <feature name="test-spring-part007" description="Spring 5.2.x support" version="5.2.13.RELEASE_1">
+        <bundle start-level="30">
+            mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-context-support/5.2.13.RELEASE_1
+        </bundle>
+    </feature>
+
+
+    <!--                  -->
+    <!--  THE MAIN EVENT  -->
+    <!--                  -->
+    <feature name="main-felix-resolver-dos-test" description="Felix Resolver DOS Test" version="1.0.0">
+        <feature>test-cxf-specs</feature>
+        <feature>test-cxf-core</feature>
+        <feature>test-spring-part001</feature>
+        <feature>test-spring-part002</feature>
+        <feature>test-spring-part003</feature>
+        <feature>test-spring-part004</feature>
+        <feature>test-spring-part005</feature>
+        <feature>test-spring-part006</feature>
+    </feature>
+</features>
