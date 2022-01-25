@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<features xmlns="http://karaf.apache.org/xmlns/features/v1.3.0" name="cxf-${cxf.version}">
+<features xmlns="http://karaf.apache.org/xmlns/features/v1.3.0" name="felix-resolver-dos-1.0.0">
+
+    <!-- INTERNAL BUNDLES -->
+    <feature name="felix-resolver-dos" version="1.0.0">
+        <bundle>mvn:com.artnaseef/felix-resolver-dos-bundleAAA/1.0.0-SNAPSHOT</bundle>
+        <bundle>mvn:com.artnaseef/felix-resolver-dos-bundleAAA/2.0.0-SNAPSHOT</bundle>
+        <bundle>mvn:com.artnaseef/felix-resolver-dos-bundleBBB/1.0.0-SNAPSHOT</bundle>
+        <bundle>mvn:com.artnaseef/felix-resolver-dos-bundleCCC/1.0.0-SNAPSHOT</bundle>
+    </feature>
 
     <!--     -->
     <!-- CXF -->

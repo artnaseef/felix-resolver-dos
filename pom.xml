@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -7,7 +8,7 @@
     <artifactId>felix-resolver-dos</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <name>Felix Resolver DOS</name>
     <description>
@@ -36,164 +37,26 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.ops4j.pax.logging</groupId>
-            <artifactId>pax-logging-api</artifactId>
-            <version>1.11.13</version>
-        </dependency>
-        <dependency>
-            <groupId>org.ops4j.pax.logging</groupId>
-            <artifactId>pax-logging-log4j2</artifactId>
-            <version>1.11.13</version>
-        </dependency>
-    </dependencies>
+    <modules>
+        <module>felix-resolver-dos-bundleAAA</module>
+        <module>felix-resolver-dos-bundleAAA2</module>
+        <module>felix-resolver-dos-bundleBBB</module>
+        <module>felix-resolver-dos-bundleCCC</module>
+
+        <module>felix-resolver-dos-features</module>
+
+        <module>felix-resolver-dos-test</module>
+    </modules>
 
     <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
-
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-artifacts</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>attach-artifact</goal>
-                        </goals>
-                        <configuration>
-                            <artifacts>
-                                <artifact>
-                                    <file>target/classes/features.xml</file>
-                                    <type>xml</type>
-                                    <classifier>features</classifier>
-                                </artifact>
-                            </artifacts>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!--          -->
-            <!--  DOCKER  -->
-            <!--          -->
-            <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>0.23.0</version>
-                <configuration>
-                    <showLogs>true</showLogs>
-                    <autoCreateCustomNetworks>true</autoCreateCustomNetworks>
-                    <images>
-
-                        <!--               -->
-                        <!--  KARAF IMAGE  -->
-                        <!--               -->
-                        <image>
-                            <name>felix-resolver-dos--karaf-test-image</name>
-                            <alias>karaf</alias>
-                            <build>
-                                <from>apache/karaf:${karafVersion}</from>
-                                <assembly>
-                                    <targetDir>/</targetDir>
-
-                                    <inline xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                                                    xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
-                                                    xsi:schemaLocation="
-                                                            http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2
-                                                            http://maven.apache.org/xsd/assembly-1.1.2.xsd
-                                                            ">
-
-                                        <files>
-                                            <file>
-                                                <source>${project.build.testOutputDirectory}/org.apache.karaf.features.cfg</source>
-                                                <outputDirectory>/opt/apache-karaf-${karafVersion}/etc</outputDirectory>
-                                            </file>
-                                            <file>
-                                                <source>${project.build.testOutputDirectory}/org.ops4j.pax.url.mvn.cfg</source>
-                                                <outputDirectory>/opt/apache-karaf-${karafVersion}/etc</outputDirectory>
-                                            </file>
-                                            <file>
-                                                <source>${project.build.testOutputDirectory}/startup.properties</source>
-                                                <outputDirectory>/opt/apache-karaf-${karafVersion}/etc</outputDirectory>
-                                            </file>
-                                            <file>
-                                                <source>${user.home}/.m2/repository/org/ops4j/pax/logging/pax-logging-log4j2/1.11.13/pax-logging-log4j2-1.11.13.jar</source>
-                                                <outputDirectory>/opt/apache-karaf-${karafVersion}/system/org/ops4j/pax/logging/pax-logging-log4j2/1.11.13</outputDirectory>
-                                            </file>
-                                            <file>
-                                                <source>${user.home}/.m2/repository/org/ops4j/pax/logging/pax-logging-api/1.11.13/pax-logging-api-1.11.13.jar</source>
-                                                <outputDirectory>/opt/apache-karaf-${karafVersion}/system/org/ops4j/pax/logging/pax-logging-api/1.11.13</outputDirectory>
-                                            </file>
-                                        </files>
-                                    </inline>
-                                </assembly>
-                                <cmd>
-                                    <arg>karaf</arg>
-                                    <arg>debug</arg>
-                                    <arg>run</arg>
-                                </cmd>
-                                <!--<cmd>-->
-                                <!--    <arg>sleep</arg>-->
-                                <!--    <arg>60</arg>-->
-                                <!--</cmd>-->
-                            </build>
-                            <run>
-                                <ports>
-                                    <port>karaf-ssh-port:8101</port>
-                                    <port>karaf-http-port:8181</port>
-                                    <port>5005:5005</port>
-                                </ports>
-                                <env>
-                                    <!-- Need to make sure address=* is in the DEBUG OPTS otherwise it listens on the container's localhost only -->
-                                    <JAVA_DEBUG_OPTS>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005</JAVA_DEBUG_OPTS>
-                                </env>
-                                <wait>
-                                    <!-- Bogus log-message wait.-->
-                                    <!--  With this, the plugin will stop immediately when the container stops.                   -->
-                                    <!--  Without it, the plugin waits until the timeout finishes even after the container stops. -->
-                                    <log>!!! THIS SHOULD NEVER HAPPEN !!!</log>
-                                    <time>3600000</time> <!-- 1 hr -->
-                                </wait>
-                                <volumes>
-                                    <bind>
-                                        <volume>${user.home}/.m2:/opt/apache-karaf/.m2</volume>
-                                    </bind>
-                                </volumes>
-                                <network>
-                                    <mode>custom</mode>
-                                    <name>felix-resolver-dos--network</name>
-                                    <alias>application</alias>
-                                </network>
-                            </run>
-                        </image>
-                    </images>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>start-before-integration-test</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>build</goal>
-                            <goal>start</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>stop-after-integration-test</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>stop</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <version>5.1.1</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 </project>
